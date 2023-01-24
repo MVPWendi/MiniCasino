@@ -24,4 +24,4 @@ Newtonsoft.Json
 System.Data.SqlClient
 
 ## Скриншоты
-[a link](https://github.com/MVPWendi/MiniCasino/blob/master/Screenshots/Screenshots.md)
+[Ссылочка *тык*](https://github.com/MVPWendi/MiniCasino/blob/master/Screenshots/Screenshots.md)
