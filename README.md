@@ -22,3 +22,6 @@ OAuth(логин через стим), ASP.NET Core MVC, БД: MS SQL SERVER (AD
 AspNet.Security.OpenId.Steam
 Newtonsoft.Json
 System.Data.SqlClient
+
+## Скриншоты
+[a link]((https://github.com/MVPWendi/MiniCasino/blob/3b421e3d9eda67471c465ba34b0714b032b0e31c/Screenshots/Screenshots.md)
