@@ -11,7 +11,6 @@ namespace WUBank.Models
         public int RightButton { get; set; }
         public string Tip { get; set; }
         private DatabaseUtilsUser DbUtils = new DatabaseUtilsUser();
-
         public void ChangeBet(decimal newBet)
         {
             var User = DbUtils.GetUser(PlayerSteamID);
@@ -56,13 +55,11 @@ namespace WUBank.Models
             if (win)
             {
                 decimal WinAmount = Bet * TotalButtons - Bet;
-
                 user.Balance += WinAmount;
                 DbUtils.UpdateUser(PlayerSteamID, user.Balance);
                 GenerateGame();
                 Tip = "Вы победили";
-                DatabaseUtils.GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status, WinAmount) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Выигрыш\', {WinAmount})");
-
+                DatabaseUtils.InsertTransaction(win, PlayerSteamID, Bet, WinAmount);
             }
             if (!win)
             {
@@ -70,8 +67,7 @@ namespace WUBank.Models
                 DbUtils.UpdateUser(PlayerSteamID, user.Balance);
                 GenerateGame();
                 Tip = "Вы проиграли";
-                DatabaseUtils.GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Проигрыш\')");
-
+                DatabaseUtils.InsertTransaction(win, PlayerSteamID, Bet);
             }
 
         }

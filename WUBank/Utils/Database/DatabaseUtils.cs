@@ -2,7 +2,7 @@
 
 namespace WUBank.Utils.Database
 {
-    public static class DatabaseUtils : Object
+    public static class DatabaseUtils
     {
         private static string ConnectionString = "Server=(localdb)\\MSSQLLocalDB; " +
            "Database=WUBank; User Id=Amlex; " +
@@ -69,5 +69,13 @@ namespace WUBank.Utils.Database
             }
         }
 
+
+        public static void InsertTransaction(bool win, string PlayerSteamID, decimal Bet, decimal WinAmount = 0)
+        {
+            if(win)
+                GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status, WinAmount) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Выигрыш\', {WinAmount})");
+            if (!win)
+                GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Проигрыш\')");
+        }
     }
 }

@@ -21,34 +21,8 @@ namespace WUBank.Controllers
 
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var model = new HomePageModel
-                {
-                    User = _db.GetUser(User),
-                };
-
-                var game = _gameService.Games.Find(x => x.PlayerSteamID == User.ToSteamID());
-                if (game == null)
-                {
-                    game = new MiniGame
-                    {
-                        PlayerSteamID = User.ToSteamID(),
-                        Bet = 1,
-                        TotalButtons = 2
-                    };
-                    _gameService.Games.Add(game);
-                }
-                game.GenerateGame();
-                model.Game = game;
-                return View(model);
-            }
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            var model = new HomePageModel(_db, _gameService, User);
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
