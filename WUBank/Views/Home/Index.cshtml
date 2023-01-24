@@ -21,6 +21,7 @@
             <h1>Информация о пользователе</h1>
             <p>Имя: @Model.User.UserName | Баланс: @Model.User.Balance</p>
             <h1>Информация об игре</h1>
+            <h1>@Model.Game.Tip</h1>
             <p>Ставка: @Model.Game.Bet | Кол-во кнопок: @Model.Game.TotalButtons |  Стимайди игрока: @Model.Game.PlayerSteamID</p>
             <form asp-action="ChangeBet" asp-controller="Game" , method="post">
                 <button type="submit">Сменить ставку</button>

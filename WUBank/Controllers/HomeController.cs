@@ -34,7 +34,6 @@ namespace WUBank.Controllers
                     game = new MiniGame
                     {
                         PlayerSteamID = User.ToSteamID(),
-                        User = _db.GetUser(User.ToSteamID()),
                         Bet = 1,
                         TotalButtons = 2
                     };

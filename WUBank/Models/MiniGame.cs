@@ -10,11 +10,11 @@ namespace WUBank.Models
         public int TotalButtons { get; set; }
         public int RightButton { get; set; }
         public string Tip { get; set; }
-
-        public User User { get; set; }
         private DatabaseUtilsUser DbUtils = new DatabaseUtilsUser();
+
         public void ChangeBet(decimal newBet)
         {
+            var User = DbUtils.GetUser(PlayerSteamID);
             if (User.Balance < newBet)
             {
                 Tip = "Недостаточно баланса";
@@ -32,40 +32,48 @@ namespace WUBank.Models
         public void GenerateGame()
         {
             RightButton = new Random().Next(0, TotalButtons);
-            
+
         }
         public void Play(int chosenButton)
         {
-            if(DbUtils.GetUser(PlayerSteamID).Balance<Bet)
+            if (DbUtils.GetUser(PlayerSteamID).Balance < Bet)
             {
                 Tip = "У вас недостаточно баланса";
                 return;
             }
             if (chosenButton == RightButton)
             {
-                Win();
-                
+                EndGame(true);
+
                 return;
             }
-            Lose();
+            EndGame(false);
             return;
         }
-        public void Win()
+        private void EndGame(bool win)
         {
-            decimal WinAmount = Bet * TotalButtons - Bet;
-            User.Balance += WinAmount;
-            DbUtils.UpdateUser(PlayerSteamID, User.Balance);
-            GenerateGame();
-            Tip = "Вы победили";
-            // Add to transactions
-        }
-        public void Lose()
-        {
-            User.Balance -= Bet;
-            DbUtils.UpdateUser(PlayerSteamID, User.Balance);
-            GenerateGame();
-            Tip = "Вы проиграли";
-            // Add to transactions
+            var user = DbUtils.GetUser(PlayerSteamID);
+            if (win)
+            {
+                decimal WinAmount = Bet * TotalButtons - Bet;
+
+                user.Balance += WinAmount;
+                DbUtils.UpdateUser(PlayerSteamID, user.Balance);
+                GenerateGame();
+                Tip = "Вы победили";
+                DatabaseUtils.GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status, WinAmount) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Выигрыш\', {WinAmount})");
+
+            }
+            if (!win)
+            {
+                user.Balance -= Bet;
+                DbUtils.UpdateUser(PlayerSteamID, user.Balance);
+                GenerateGame();
+                Tip = "Вы проиграли";
+                DatabaseUtils.GetTable($"INSERT INTO TRANSACTIONS (ID, Date, SteamID, Amount, Status) VALUES ((SELECT ISNULL(MAX(id) + 1, 0) FROM Transactions), GETDATE(), {PlayerSteamID}, {Bet}, N\'Проигрыш\')");
+
+            }
+
         }
     }
 }
