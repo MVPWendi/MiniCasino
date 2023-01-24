@@ -16,7 +16,7 @@
             <h1>Hello</h1>
             @User?.Claims.ElementAt(0)?.Value
             <form asp-action="SignOutUser" asp-controller="Auth" method="post">
-                <button class="btn btn-lg btn-success m-1" type="submit">Logout</button>
+                <button class="btn btn-lg btn-success m-1" type="submit">Выйти</button>
             </form>                  
             <h1>Информация о пользователе</h1>
             <p>Имя: @Model.User.UserName | Баланс: @Model.User.Balance</p>

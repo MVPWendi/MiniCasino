@@ -6,6 +6,9 @@ using WUBank.Utils.Database;
 
 namespace WUBank.Controllers
 {
+    /// <summary>
+    /// Контроллер Аутентификации через Steam
+    /// </summary>
     public class AuthController : Controller
     {
 
@@ -28,10 +31,10 @@ namespace WUBank.Controllers
         {
             return SignOut(new AuthenticationProperties { RedirectUri = "/" }, CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
         [HttpGet, HttpPost]
         public IActionResult Check()
         {
+            //Если пользователя нет, добавляем в бд и перенаправляем на Home/Index
             DBUsers.CreateUserIfNotExist(User);
             return RedirectToAction("Index", "Home");
         }

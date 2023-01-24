@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using WUBank;
+using WUBank.Services;
 using WUBank.Utils.Database;
 
 var builder = WebApplication.CreateBuilder(args);

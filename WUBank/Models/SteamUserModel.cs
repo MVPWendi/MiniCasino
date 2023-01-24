@@ -1,5 +1,8 @@
 ﻿namespace WUBank.Models
 {
+    /// <summary>
+    /// Модель стим пользователя, которую возвращает api steam, нас интересуют только поле personaname
+    /// </summary>
     public class SteamUserModel
     {
         public class Player
@@ -7,6 +10,9 @@
             public string steamid { get; set; }
             public int communityvisibilitystate { get; set; }
             public int profilestate { get; set; }
+            /// <summary>
+            /// Имя пользователя  (никнейм)
+            /// </summary>
             public string personaname { get; set; }
             public string profileurl { get; set; }
             public string avatar { get; set; }
